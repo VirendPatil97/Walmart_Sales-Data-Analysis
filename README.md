@@ -49,11 +49,13 @@ This project is an end-to-end data analysis solution designed to extract critica
 ### 9. SQL Analysis: Complex Queries and Business Problem Solving
    - **Business Problem-Solving**: Write and execute complex SQL queries to answer critical business questions, such as:
      - Revenue trends across branches and categories.
+       
     ```sq
-       select dbo.walmart.category, round(sum(dbo.walmart.total*dbo.walmart.profit_margin),2) as total_profit
+       select dbo.walmart.category,
+       round(sum(dbo.walmart.total*dbo.walmart.profit_margin),2) as total_profit
        from walmart
-        group by dbo.walmart.category
-        order by total_profit desc
+       group by dbo.walmart.category
+       order by total_profit desc
     ```
      - Identifying best-selling product categories.
      - Sales performance by time, city, and payment method.
