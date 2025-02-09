@@ -57,9 +57,38 @@ This project is an end-to-end data analysis solution designed to extract critica
        group by dbo.walmart.category
        order by total_profit desc
 ```
-     - Identifying best-selling product categories.
+   - Identifying best-selling product categories.
+     
+        ```sql
+              select * from 
+             ( select dbo.walmart.Branch,
+            dbo.walmart.category,
+            round(AVG(dbo.walmart.rating),2) as avg_rating,
+            RANK() OVER(PARTITION by dbo.walmart.branch order by AVG(dbo.walmart.rating) desc) as rank
+            from walmart 
+            group BY dbo.walmart.Branch, dbo.walmart.category) a
+            where rank =1
+        ```
+
+     
      - Sales performance by time, city, and payment method.
      - Analyzing peak sales periods and customer buying patterns.
+
+         ```sql
+               with cte as (
+               select *,
+                case 
+                when DATEPART(HOUR, cast(time as time)) < 12 then 'Morning'
+                when DATEPART(HOUR, cast(time as time)) BETWEEN 12 and 17 then 'Afternoon'
+                else 'Evening'
+                end as Shift
+               from dbo.walmart
+               )
+            SELECT branch, shift, count(*) as no_of_transactions from cte
+            group by branch,shift
+            order by branch, no_of_transactions desc
+
+         ```
      - Profit margin analysis by branch and category.
    - **Documentation**: Keep clear notes of each query's objective, approach, and results.
 
